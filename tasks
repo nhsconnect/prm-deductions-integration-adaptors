@@ -66,7 +66,7 @@ case "${command}" in
     IMAGE=local/mhs-$IMAGE_PREFIX
     # test that docker image trusts the server certificate in PTL-integration
     docker run --rm -v $PWD:/test --entrypoint sh $IMAGE -c "openssl verify -verbose /test/test-assets/smsp.crt"
-    docker run --rm -v $PWD:/test --entrypoint sh $IMAGE -c "openssl verify -verbose /test/test-assets/pds-ldaps.crt"
+    docker run --rm -v $PWD:/test --entrypoint sh $IMAGE -c "openssl verify -verbose /test/test-assets/sds-ldaps.crt"
     ;;
   build_docker_dns_local)
     REPOSITORY_URI=$IMAGE_REPO_NAME
