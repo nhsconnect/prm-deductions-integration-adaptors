@@ -5,6 +5,11 @@ if [[ -z "$GLOBAL_FORWARD_SERVER" ]]; then
   exit 1
 fi
 
+if [[ -z "$FORWARD_ZONE_NAME" ]]; then
+  echo "FORWARD_ZONE_NAME must be set to a domain name under which Spine service endpoints are"
+  exit 1
+fi
+
 if [[ -z "$HSCN_FORWARD_SERVER_1" || -z "$HSCN_FORWARD_SERVER_2" ]]; then
   echo "HSCN_FORWARD_SERVER_1 and HSCN_FORWARD_SERVER_2 must be set to a DNS server which can reply for HSCN DNS queries"
   exit 1
@@ -43,6 +48,7 @@ sed \
     -e "s/@RR_CACHE_SIZE@/${rr_cache_size}/" \
     -e "s/@THREADS@/${threads}/" \
     -e "s/@SLABS@/${slabs}/" \
+    -e "s/@FORWARD_ZONE_NAME@/${FORWARD_ZONE_NAME}/" \
     -e "s/@GLOBAL_FORWARD_SERVER@/${GLOBAL_FORWARD_SERVER}/" \
     -e "s/@HSCN_FORWARD_SERVER_1@/${HSCN_FORWARD_SERVER_1}/" \
     -e "s/@HSCN_FORWARD_SERVER_2@/${HSCN_FORWARD_SERVER_2}/" \
@@ -326,7 +332,7 @@ sed \
             module-config: "iterator"
             forward-zone:
                 # Forward NHS Spine queries to specific DNSes
-                name: "ncrs.nhs.uk"
+                name: "@FORWARD_ZONE_NAME@"
                 forward-addr: @HSCN_FORWARD_SERVER_1@
                 forward-addr: @HSCN_FORWARD_SERVER_2@
 
