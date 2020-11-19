@@ -62,7 +62,9 @@ class SDSClient(object):
                                    "{interaction_id}", {"ods_code": ods_code, "interaction_id": interaction_id})
 
         # As per the spec exactly one result should be returned
-        response = accredited_system_lookup[0]
+        # quick temporary fix for EMIS in PTL-i - take the last entry instead of the first one
+        pos = len(accredited_system_lookup) - 1
+        response = accredited_system_lookup[pos]
         party_key = response['attributes'][MHS_PARTY_KEY]
 
         asid = response['attributes'].get(MHS_ASID)
