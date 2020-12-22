@@ -88,10 +88,11 @@ def start_inbound_server(local_certs_file: str, ca_certs_file: str, key_file: st
         inbound_server = tornado.httpserver.HTTPServer(tornado.web.Application(handlers), ssl_options=ssl_ctx)
         inbound_server.listen(443)
         logger.info('011', 'Started main handler listener at 443')
-        # Start health check on port 80
-        healthcheck_application = tornado.web.Application([healthcheck_endpoint])
+        handlers.insert(0, healthcheck_endpoint)
+        # Start health check on port 80, and mhs service too for testing
+        healthcheck_application = tornado.web.Application(handlers)
         healthcheck_application.listen(80)
-        logger.info('011', 'Started health check listener at 80')
+        logger.info('011', 'Started listener at 80')
     else:
         # Add health check endpoint
         handlers.insert(0, healthcheck_endpoint)
